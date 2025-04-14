@@ -18,7 +18,8 @@ import {
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react"
-
+import { SideMenuItems } from "../types/menuItem.d"
+import type { SideMenuItem } from "../types/menuItem.d"
 import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
@@ -150,7 +151,8 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ sideMenu, ...props }: React.ComponentProps<typeof Sidebar> & { sideMenu: SideMenuItems | null }) {
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -169,9 +171,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        { /* Create Each Menu */}
+        {sideMenu ? (<>
+          {
+            sideMenu.map((item: SideMenuItem) => (
+              <SidebarMenuItem key={item.name}>
+                <SidebarMenuButton asChild isActive={item.isActive}>
+                  <a href={item.url}>{item.name}</a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))
+          }
+        </>)
+          : (
+            <>
+              <NavMain items={data.navMain} />
+              <NavDocuments items={data.documents} />
+              <NavSecondary items={data.navSecondary} className="mt-auto" />
+            </>
+          )}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

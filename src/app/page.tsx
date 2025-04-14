@@ -1,40 +1,45 @@
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
-
-import data from "./data.json"
+import { SideMenuItems } from "../types/menuItem.d"
+import { Header } from "../components/custom/header";
 
 export default function Page() {
-  return (
-    <SidebarProvider
-      style={
+
+    const sideMenus: SideMenuItems = [
         {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
-        } as React.CSSProperties
-      }
-    >
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards />
-              <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
-              </div>
-              <DataTable data={data} />
-            </div>
-          </div>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  )
+            name: "Dashboard",
+            url: "dashboard",
+            icon: "",
+            isActive: true
+        },
+        {
+            name: "Study",
+            url: "study",
+            icon: "",
+            isActive: true
+        },
+        {
+            name: "Practice",
+            url: "practice",
+            icon: "",
+            isActive: true
+        }
+    ];
+    // TODO : 사이드 메뉴 바꾸기
+    return (
+        <>
+            <Header />
+            <SidebarProvider>
+                <AppSidebar sideMenu={sideMenus} />
+                <main>
+                    <SidebarTrigger />
+                    <div className="container mx-auto">
+                        <p>
+                            Hello. It's First Page
+                        </p>
+                    </div>
+                </main>
+            </SidebarProvider>
+        </>
+    )
 }
